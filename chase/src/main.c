@@ -1,5 +1,6 @@
 #include <kipr/botball.h>
 #include <stdbool.h>
+
 const int Rmotor = 1;
 const int Lmotor = 0;
 const int power = 800;
