@@ -3,7 +3,6 @@ const int nSpeed = 100;
 const int gSpeed = 600;	
 const int lSpeed = 400;
 const int black = 2000;
-
 void lineFollow ()
 {
     if( (get_create_lfcliff() > black) &&  get_create_rfcliff() < black)
