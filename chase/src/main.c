@@ -1,18 +1,29 @@
 #include <kipr/botball.h>
 #include <stdbool.h>
 
+/*###########################
+#     Start conditions      #
+#    1. Facing Right        #
+#                           #
+#                           #
+#############################*/
+
 const int Rmotor = 1;
 const int Lmotor = 0;
 const int power = 800;
+
 const int range = 0;
 const int topHatR = 1;
 const int topHatL = 2;
 const int black = 2000;
 const int white = 400; 
+
 const int tickdeg = 10;
 const int burning = 1;
+
 const int people = 0;
 bool burn = false;
+
 void left (int degree, int speed) {
 	int ticks = degree * tickdeg;
     int d = gmpc(1);
@@ -33,23 +44,13 @@ void right (int degree, int speed) {
     }
     ao();
 }
-void spinCW(){
-    mav(Lmotor, power);
-    mav(Rmotor, -power);
-    msleep(5);
-}
 
-void forward(){
-	mav(Lmotor, power);
-    mav(Rmotor, power);
-    msleep(1000);
-}
-void forward2(){
+void forward(int x){
     mav(Lmotor, power);
     mav(Rmotor, power);
-    msleep(5);
+    msleep(x);
 }
-void backward2(){
+void backward(){
     mav(Lmotor, -power);
     mav(Rmotor, -power);
     msleep(5);
@@ -63,7 +64,8 @@ void back(int inches, int speed) {
         	mav(0,speed);
         	mav(1,speed-100);
            
-    }else{
+    }
+	else{
          mav(0,speed-100);
          mav(1,speed);
         
@@ -74,29 +76,16 @@ void back(int inches, int speed) {
 }
 
 int main(){
-    	//start facing right
-    	//get past start line
-  		while (analog(topHatL) < black){
-            mav(Rmotor, power);
-            mav(Lmotor, power);
-            msleep(5);
-    	}
-        
-    	while (analog(topHatL) > white){
-            mav(Rmotor, power);
-            mav(Lmotor, power);
-            msleep(5);
-    	}
     	
-    	//move forward until hit right black box	
-        while (analog(topHatL) < black){
-            mav(Rmotor, power);
-            mav(Lmotor, power);
-            msleep(5);
-    	}
-    	mav(Rmotor, power);
-    	mav(Lmotor, power);
-    	msleep(2500);
+	//get past start line
+  		while (analog(topHatL) < black){ forward(5); }
+   	//
+    	while (analog(topHatL) > white){ forward(5); }
+    	
+   	//move forward until hit right black box	
+        while (analog(topHatL) < black){ forward(5); }
+	
+		forward(2500)
     
     	//Turn left
     	left(90, power);
@@ -104,48 +93,39 @@ int main(){
     	//Moves out of box
     	while (analog(topHatL) < black && analog(topHatR) < black) {
             printf("%d \n", analog(topHatL));
-			mav(Rmotor, power);
-            mav(Lmotor, power);
-            msleep(5);
+			forward(5);
         }
- 
-    
     	while (analog(topHatL) > white && analog(topHatR) > white) {
-            mav(Rmotor, power);
-            mav(Lmotor, power);
-            msleep(5);
+            forward(5);
         }
     
+	
     	//Moves till black/grey line
     	while (analog(topHatL) < black && analog(topHatR) < black) {
-			mav(Rmotor, power);
-            mav(Lmotor, power);
-            msleep(1);
+			forward(1)
+		//is there a reason this is a 1 ms instead of 5?
         }
     
     	while (analog(topHatL) > white && analog(topHatR) > white) {
-            mav(Rmotor, power);
-            mav(Lmotor, power);
-            msleep(5);
+            forward(5);
         }
     	
-    	mav(Rmotor, power);
-        mav(Lmotor, power);
-        msleep(1200);
+		forward(1200);
   
     	//Turn left onto line
     	left(90, power);
     
     
     //Opens camera
-    int x;//, y ;
+    int x;
 	camera_open_black();
  	msleep(500);
     
     int i;
     for (i = 0; i < 2; i++) {
    		camera_update();
-        //Line follow until sees red pawn
+        
+//Line follow until sees red pawn
         while(get_object_count(people) == 0 || get_object_area(people, 0) < 100) { 
             if(analog(topHatL) > 1000){
 
@@ -169,9 +149,10 @@ int main(){
         //Aligns (centers) robot to red pawn
         while (x <= 75 || x >= 85 ) {
             if(x > 85) {
-                backward2();  
-            } else if(x < 75 && x >= 0) {
-                forward2();   
+                backward();  
+            } 
+			else if(x < 75 && x >= 0) {
+                forward(5);   
             } 
             printf("%d \n", x);
             x = get_object_center_x(people, 0);
@@ -182,9 +163,7 @@ int main(){
         mav(Lmotor, power);
         mav(Rmotor, 0);
         msleep(2170);
-        mav(Lmotor, power);
-        mav(Rmotor, power);
-        msleep(1300);
+		forward(1300);
         
         //back(100, -power);
         mav(Lmotor, -430);
@@ -229,13 +208,9 @@ int main(){
     }
     
     while (analog(topHatL) > 1000 || analog(topHatR) > 1000) {
-    	mav(Lmotor, power);
-        mav(Rmotor, power);
-        msleep(5);
+		forward(5);
     }
-    mav(Lmotor, power);
-    mav(Rmotor, power);
-    msleep(800);
+	forward(800);
     left(90, power);
     
     camera_close();
@@ -270,21 +245,17 @@ int main(){
     }
     left(90, power);
      while (analog(topHatR) > white) {
-    	mav(Lmotor, power);
-        mav(Rmotor, power);
-        msleep(5);
+		forward(5);
     }
      while (analog(topHatR) < black) {
-    	mav(Lmotor, power);
-        mav(Rmotor, power);
-        msleep(5);
+		forward(5);
     }
-    mav(Lmotor, power);
-    mav(Rmotor, power);
-    msleep(1000);
-    if (burn) {
+	forward(5);
+	
+    if(burn) {
      	printf("BURN");
-    } else {
+    }
+	else {
 		printf("NO BURN");
     }
    return 0;
