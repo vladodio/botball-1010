@@ -3,6 +3,11 @@ const int nSpeed = 100;
 const int gSpeed = 600;	
 const int lSpeed = 400;
 const int black = 2000;
+
+int blackLeft ()
+{
+	return get_create_lfcliff_amt();
+}
 void lineFollow ()
 {
     if( (get_create_lfcliff() > black) &&  get_create_rfcliff() < black)
@@ -44,13 +49,21 @@ void turn (int degrees, int speed)
     }
     create_stop();
 }
-
+int findTurn(){
+  
+    return 0;
+}
 int main()
 {
     create_connect();
+    int b = blackLeft();
+    printf("%d", b);
+    
+    findTurn();
+    /*
     turn(90, -nSpeed);
     msleep(10);
-    
+    */
     /*
     create_drive_direct(nSpeed, nSpeed); //check this shit if program dont work
     msleep(500);
