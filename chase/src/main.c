@@ -6,7 +6,7 @@
 #    1. Facing Right        #
 #                           #
 #                           #
-#############################*/
+###########################*/
 
 const int Rmotor = 1;
 const int Lmotor = 0;
