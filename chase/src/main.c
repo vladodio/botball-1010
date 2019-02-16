@@ -8,22 +8,28 @@
 #                           #
 ###########################*/
 
+//motor constants
 const int Rmotor = 1;
 const int Lmotor = 0;
-const int power = 800;
+const int power  = 800;
+const int tickdeg = 10;
 
-const int range = 0;
+//Line sensors constants
 const int topHatR = 1;
 const int topHatL = 2;
 const int black = 2000;
-const int white = 400; 
+const int white = 400;
 
-const int tickdeg = 10;
+//camera vars
 const int burning = 1;
-
 const int people = 0;
+int xVal = 0;
 bool burn = false;
 
+//currently unused vars
+const int range = 0
+
+	
 void left (int degree, int speed) {
 	int ticks = degree * tickdeg;
     int d = gmpc(1);
@@ -37,8 +43,8 @@ void left (int degree, int speed) {
 void right (int degree, int speed) {
 	int ticks = degree * tickdeg;
     int d = gmpc(0);
-    mav(0, speed);
-    mav(1, -speed);
+    mav(Lmotor, speed);
+    mav(Rmotor, -speed);
     while (gmpc(0)-d < ticks) {
         msleep(10);
     }
@@ -50,19 +56,21 @@ void forward(int x){
     mav(Rmotor, power);
     msleep(x);
 }
-void backward(){
+void backward(x){
     mav(Lmotor, -power);
     mav(Rmotor, -power);
-    msleep(5);
+    msleep(x);
 }
+//not getting used.
+/*
 void back(int inches, int speed) {
-	int ticks = inches * 23;
+int ticks = inches * 23;
     int d = gmpc(1);
     int diff = gmpc(1)-gmpc(0);
 	while(gmpc(1)-d < ticks){
         if(gmpc(0)+diff < gmpc(1)){
-        	mav(0,speed);
-        	mav(1,speed-100);
+        	mav(Lmotor ,speed);
+        	mav(Rmotor ,speed-100);
            
     }
 	else{
@@ -74,50 +82,36 @@ void back(int inches, int speed) {
 	msleep(10);
 	ao();
 }
-
+*/
 int main(){
     	
-	//get past start line
+//get past start line
   		while (analog(topHatL) < black){ forward(5); }
-   	//
     	while (analog(topHatL) > white){ forward(5); }
     	
-   	//move forward until hit right black box	
+//move forward until hit right black box	
         while (analog(topHatL) < black){ forward(5); }
-	
 		forward(2500)
-    
-    	//Turn left
     	left(90, power);
     	
-    	//Moves out of box
-    	while (analog(topHatL) < black && analog(topHatR) < black) {
+//Moves out of box
+    	while (analog(topHatL) < black && analog(topHatR) < black){
             printf("%d \n", analog(topHatL));
 			forward(5);
         }
-    	while (analog(topHatL) > white && analog(topHatR) > white) {
-            forward(5);
-        }
+    	while (analog(topHatL) > white && analog(topHatR) > white){ forward(5); }
     
-	
-    	//Moves till black/grey line
-    	while (analog(topHatL) < black && analog(topHatR) < black) {
-			forward(1)
-		//is there a reason this is a 1 ms instead of 5?
-        }
-    
-    	while (analog(topHatL) > white && analog(topHatR) > white) {
-            forward(5);
-        }
-    	
+//Moves till black/grey line
+    	while (analog(topHatL) < black && analog(topHatR) < black){ forward(1); }
+//
+    	while (analog(topHatL) > white && analog(topHatR) > white){ forward(5); }
 		forward(1200);
-  
-    	//Turn left onto line
+ 
+//Turn left onto line
     	left(90, power);
     
-    
-    //Opens camera
-    int x;
+   
+//Opens camera
 	camera_open_black();
  	msleep(500);
     
@@ -143,19 +137,19 @@ int main(){
             camera_update();
         }
 		
-        x = get_object_center_x(people, 0);
+        xVal = get_object_center_x(people, 0);
         camera_update();
 	
         //Aligns (centers) robot to red pawn
-        while (x <= 75 || x >= 85 ) {
-            if(x > 85) {
+        while (xVal <= 75 || xVal >= 85 ) {
+            if(xVal > 85) {
                 backward();  
             } 
-			else if(x < 75 && x >= 0) {
+			else if(xVal < 75 && xVal >= 0) {
                 forward(5);   
             } 
-            printf("%d \n", x);
-            x = get_object_center_x(people, 0);
+            printf("%d \n", xVal);
+            xVal = get_object_center_x(people, 0);
             camera_update();
         }
 
