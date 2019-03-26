@@ -8,37 +8,44 @@ const int Rlift = 3;
 const int Llift = 2;
 const int RPower = 280;
 const int LPower = 270;
+const int R
+
 const int degTicks = 15;
 
-const int Rline = //x;
-const int Lline = //x;
+const int lineS = //x;
 const int black = //x;
 const int white = //x;
 const int grey  = //x;
 
-void flip(int degrees){
-  int ticks = degrees * degTicks;
-  int time = gmpc(Llift)+ticks;
-  mav(Rlift, RPower);
-  mav(Llift, LPower);
-  while(gmpc(Llift) < time){
-    msleep(10);
-    //printf("%d", gmpc(Llift));
-  }
-  ao();
-  msleep(10);
-  printf("I have decided I want to die.");
+
+void timeFollow(double s){
+double t = seconds() + s;
+    while(seconds() < t){
+        if(analog(lineS) > line){
+            mav(Lmotor, 1000);
+            mav(Rmotor, 500);
+            msleep(5);
+        }
+        else {
+            mav(Lmotor, 500);
+            mav(Rmotor, 1000);
+            msleep(5);
+        }
+    }
 }
 
-void follow(time){
-  int tick = gmpc(Rlift) + time;
-  if(analog() > ){
-  
-  }
-  
+
+
+void flip(int ticks){
+  enable_servos();
+  set_servo_position(, Ready);
+
+  int degrees = ticks * degTicks;
+  while()  
 }
 
 int main(){
+  
   flip(45);
 }  
 
