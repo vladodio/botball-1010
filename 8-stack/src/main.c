@@ -4,18 +4,16 @@ const int Rmotor = //x;
 const int Lmotor = //x;
 const int power = 800;
 
-const int Rlift = 3;
-const int Llift = 2;
-const int RPower = 280;
-const int LPower = 270;
-const int R
+const int lift = 0;
+const int down = 50;
+const int up = 200; //?
 
-const int degTicks = 15;
+const int farming = //x;
+const int farmPower = 1500;
 
 const int lineS = //x;
 const int black = //x;
 const int white = //x;
-const int grey  = //x;
 
 
 void timeFollow(double s){
@@ -34,18 +32,42 @@ double t = seconds() + s;
     }
 }
 
+void turn(int direction, int degree, int speed){
+    if(direction == 1){
+	int ticks = degree * tickdeg;
+    int d = gmpc(0);
+    mav(Lmotor, speed);
+    mav(Rmotor, -speed);
+    while (gmpc(0)-d < ticks) { msleep(10); }
+    ao();
+	}
+    
+    if(direction == 0){
+	int ticks = degree * tickdeg;
+    int d = gmpc(1);
+    mav(Lmotor, -speed);
+    mav(Rmotor, speed);
+    while (gmpc(1)-d < ticks) { msleep(10); }
+    ao();   
+	}
+    return;
+}
 
-
-void flip(int ticks){
+void flip(){
   enable_servos();
-  set_servo_position(, Ready);
-
-  int degrees = ticks * degTicks;
-  while()  
+  set_servo_position(lift, up); 
+  msleep(5000);
 }
 
 int main(){
-  
-  flip(45);
+	enable_servos();
+    set_servo_position(lift, down);
+    mav(l)
+    
+    
+    
+    
+    mav(0,1500);
+    msleep(100000);
+    
 }  
-
