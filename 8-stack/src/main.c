@@ -50,7 +50,6 @@ void timeFollow(double s){
             mav(LMotor, 250);
         }
     }
-    ao();
 }
 
 void turn(int direction, int degree, int speed){
@@ -83,13 +82,22 @@ void flip(){
 
 void slowline(double seconds ){
     double i = 0;
-    seconds = seconds/4;
+    seconds = seconds/2;
     while(i < seconds){
-        timeFollow(4);
+        mav(farming, farmPower);
+        set_servo_position(1,1528);
+        timeFollow(1);
+        set_servo_position(1,585);
+        timeFollow(1);
+        set_servo_position(1,1528);
+        mav(farming, farmPower);
+        set_servo_position(1,585);
+        mav(LMotor, 0);
+        mav(RMotor, 0);
         msleep(250);
         i++;
-        mav(farming, farmPower);
     }
+    ao();
 }
 
 void forward(int msecs){
@@ -101,12 +109,15 @@ void forward(int msecs){
 int main(){
     enable_servos();
     set_servo_position(lift, down);
+    
+    wait_for_light(3);
+    shut_down_in(119);
     /*
     turn(right, 90, power);
     msleep(5000);
     return(0);
     */
-        mav(RMotor,power);
+    mav(RMotor,power);
     mav(LMotor,power);
     msleep(200);
     turn(right,100,power);
@@ -115,32 +126,33 @@ int main(){
     while(analog(RLineS) < black){ msleep(5); }
     ao();
     msleep(10);
-        forward(4000);
-        turn(left, 90, power);
-        ao();
-        mav(RMotor, power);
-        mav(LMotor, power);
+    forward(4000);
+    turn(left, 70, power);
+    ao();
+    mav(RMotor, power);
+    mav(LMotor, power);
     msleep(3000);
-        while(analog(RLineS) < black) {msleep(5); }
-      
+    while(analog(RLineS) < black) {msleep(5); }
 
-        mav(RMotor, -power);
-        mav(LMotor, -power);
-        msleep(350);
-        ao();
-        turn(left, 95, power);
-        ao();
-        mav(farming, farmPower);
-        slowline(28);
-        ao();
+
+    mav(RMotor, -power);
+    mav(LMotor, -power);
+    msleep(350);
+    ao();
+    turn(left, 95, power);
+    ao();
+    mav(farming, farmPower);
+    slowline(28);
+    ao();
     turn(left,160,power);
     mav(RMotor, power);
     mav(LMotor, power);
-    msleep(3500);
+    msleep(7000);
     ao();
     turn(left, 180, power);
     flip();
-        return 0;
+    return 0;
 
-        }  
+}  
+
 
