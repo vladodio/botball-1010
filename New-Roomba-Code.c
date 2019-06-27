@@ -1,32 +1,49 @@
 #include <kipr/botball.h>
+/* Issues:
+/       The start function doesn't compile
+/       The code is LACKING comments, Remember Zain has to understand what the code is doing
+/       Changing the constant names to be more descriptive wouldn't hurt
+/       Checklist doesn't exist and very much needs to
+/       
+/
+*/
 
-const int TRUE=1;
+const int TRUE = 1;
 const int black = 2000;
 const int pivot = 300;
 const int forwardbl = 400;
+
 //Create sensors
 const int lCliff = 1;
 const int rCliff = 2;
-const int lfCliff= 3;
+const int lfCliff = 3;
 const int rfCliff = 4;
 
 //Wallaby sensors
 const int touch = 0; // touch sensor in grabber
 const int start = 0; // light sensor for starting
-int go=0;
-int current=0;
-const int wire=3; // motor to repair comm wire
+
+int go = 0;
+int current = 0;
+
+const int wire = 3; // motor to repair comm wire
 const int atWire = 800;
+
 const int horizontal = 1683;
 const int vertical = 520;
+
 const int atLevel = 240;
 const int atPipe = 625;
 const int atUp = 1600;
-const int raise = 0;
-const int turn = 1;
-const int push = 9;
+
+// The tire claw consts
+    const int raise = 0; // The servo that raises the tireclaw
+    const int turn = 1; // The servo that rotates the tireclaw
+    const int push = 9; // The pushButton that detects the pipe
+
 const int ninety = 980;
 const int semi = 2020;
+
 const int forward = 580;
 const int pivot2 = 320;
 const int forward2 = 228;
@@ -131,15 +148,14 @@ int singlelineright(double time) {
         }
     }
 }
+
 /*
 void start(){
     printf("Team 0160 Create Robot\n");
     create_connect();
     create_full();
-
     printf("Walaby Battery = %f\n",power_level());
     printf("Create Battery = %d\n", get_create_battery_capacity());
-
     //Set up for start
     enable_servos();
     msleep(100);
@@ -147,12 +163,10 @@ void start(){
     msleep(500);
     set_servo_position(turn, horizontal);
     msleep(200);
-
     printf(" \n");
     printf("Press A Button to Light Start\n");
     printf("Press B Button to Bypass\n");
     printf("Press C Button to Quit\n");
-
     while (TRUE) {
         if (a_button()==1) {  // A Button for light start
             printf("Waiting for start light\n");
@@ -177,21 +191,25 @@ void start(){
             return(0);
         }
     }
-
     shut_down_in(118); // Shut down before two minutes
     msleep(1000); //Let other robot start
 }
 */
 
+//Enables servos and does all the prep work 
 void init(){
 	create_connect();
 	enable_servos();
 	msleep(100);
     set_servo_position(raise, atUp);
     msleep(100);
-    set_servo_position(turn,horizontal);
+    set_servo_position(turn, horizontal);
     msleep(100);
 }
+
+// Starting Position:
+// Function: 
+// Ends: 
 
 void posForPickup(){
 	    create_drive_direct(200, 200);
@@ -259,6 +277,10 @@ void posForPickup(){
     msleep(300);
 }
 
+// Starting Position:
+// Function: 
+// Ends: 
+
 void pickUpPipe(){
 	//Bring down the arm until the lever switch
     set_servo_position(raise, atLevel);
@@ -290,6 +312,10 @@ void pickUpPipe(){
     msleep(150);
 
 }
+
+// Starting Position:
+// Function: 
+// Ends: 
 
 void moveToPipeZone(){
     //Turn onto the black line 
@@ -350,6 +376,10 @@ void moveToPipeZone(){
 	ao();
 }
 
+// Starting Position:
+// Function: 
+// Ends: 
+
 void putFirstPipeOn(){
 	create_drive_direct(0,0); 
 	msleep(1000);
@@ -378,6 +408,10 @@ void putFirstPipeOn(){
     create_drive_direct(-250,-250);
 	msleep(700);
 }
+
+// Starting Position:
+// Function: 
+// Ends: 
 
 void alignForPipe2(){
 	create_drive_direct(-250,-250);
@@ -412,6 +446,10 @@ void alignForPipe2(){
     msleep(100);
 }
 
+
+// Starting Position:
+// Function: Follows the left wall, aligns, then picks up the pipe
+// Ends: Aligned with the wall 
 void getPipe2(){
     while (get_create_rcliff_amt() > black){  
         secondWallFollowright();
@@ -476,6 +514,11 @@ void getPipe2(){
     create_drive_direct(0,0);
     msleep(100);
 }
+
+// Starting Position:
+// Function: 
+// Ends: 
+
 void getWashers(){
 	create_drive_direct(-200,200);
     msleep(semi);
@@ -532,6 +575,11 @@ void getWashers(){
     create_drive_direct(0,0);
     msleep(100);
 }
+
+// Starting Position:
+// Function: 
+// Ends: 
+
 void putSecondPipeOn(){
 	create_drive_direct(200,200);
     msleep(forward2);
@@ -556,20 +604,26 @@ void putSecondPipeOn(){
     create_drive_direct(200,0);
     msleep(200);
 }
-//Initialization ======================================================================
-int main() {
-    //start()
-    init();
-	//posForPickup();
-	//pickUpPipe();
-	//moveToPipeZone();
-    //putFirstPipeOn();
-    //alignForPipe2();
-	getPipe2();
-	getWashers();
-	putSecondPipeOn();
+
+void cleanUp(){
     disable_servos();
     create_stop(); 
     create_disconnect();
+}
+
+
+// Runs the other functions in tandem
+int main() {
+    //start()
+    init();
+	posForPickup();
+	pickUpPipe();
+	moveToPipeZone();
+    putFirstPipeOn();
+    alignForPipe2();
+	getPipe2();
+	getWashers();
+	putSecondPipeOn();
+    cleanUp();
     return(0);
 }
