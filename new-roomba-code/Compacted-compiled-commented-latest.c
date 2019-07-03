@@ -4,8 +4,10 @@
 /       The code is LACKING comments, Remember Zain has to understand what the code is doing
 /       Changing the constant names to be more descriptive wouldn't hurt
 /       Checklist doesn't exist and very much needs to
-/       
-/
+/       * add a variable for the washerclaw's port
+/       * cleanup the variables and comment them
+/       * make the servo start lower in the starting box
+/       * other shit i cant remember because its two am
 */
 
 const int TRUE = 1;
