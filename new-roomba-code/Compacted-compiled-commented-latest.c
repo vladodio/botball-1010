@@ -4,16 +4,14 @@
 /       The code is LACKING comments, Remember Zain has to understand what the code is doing
 /       Changing the constant names to be more descriptive wouldn't hurt
 /       Checklist doesn't exist and very much needs to
-/       * add a variable for the washerclaw's port
-/       * cleanup the variables and comment them
-/       * make the servo start lower in the starting box
-/       * other shit i cant remember because its two am
+/       
+/
 */
 
 const int TRUE = 1;
 const int black = 2000;
 const int pivot = 250;
-const int forwardbl = 450;
+const int forwardbl = 470;
 
 //Create sensors
 const int lCliff = 1;
@@ -37,7 +35,7 @@ const int atWire = 800;
 const int horizontal = 1683;
 const int vertical = 520;
 
-const int atLevel = 260;
+const int atLevel = 245;
 const int atPipe = 625;
 const int atUp = 1600;
 
@@ -46,10 +44,10 @@ const int raise = 0; // The servo that raises the tireclaw
 const int turner = 1; // The servo that rotates the tireclaw
 const int push = 9; // The pushButton that detects the pipe
 
-const int ninety = 930;
-const int semi = 1860;
+const int ninety = 1000;
+const int semi = 2000;
 
-const int forward = 560;
+const int forward = 530;
 const int pivot2 = 320;
 const int forward2 = 228;
 
@@ -69,11 +67,11 @@ void stop(int sleep){
 void turn(int degree, int direction, int adjustment){
     if(degree == 90){
         create_drive_direct(200 * (direction), -200 * (direction));
-        msleep(ninety + adjustment);
+        msleep(ninety+adjustment);
     }
     else if(degree == 180){
         create_drive_direct(200 * (direction), -200 * (direction));
-        msleep(semi + adjustment);
+        msleep(semi+adjustment);
     }
     else{
         printf("Angle not Defined??");
@@ -81,14 +79,13 @@ void turn(int degree, int direction, int adjustment){
     }
 }
 
-/*
 // Gyroscope package
 
 
 
 
 // Turning defined with gyroscope
-
+/*
 void turn(int degree, int direction, int adjustment){
     if(degree == 90){
         
@@ -101,8 +98,9 @@ void turn(int degree, int direction, int adjustment){
         //exit();
     }
 }
-
 */
+
+
 
 
 
@@ -183,7 +181,6 @@ void init(){
     create_connect();
     enable_servos();
     msleep(100);
-// make this lower so it fits in the starting box
     set_servo_position(raise, atUp);
     msleep(100);
     set_servo_position(turner, horizontal);
@@ -228,7 +225,7 @@ void starter(){
         }
     }
     shut_down_in(118); // Shut down before two minutes
-// msleep(1000); //Let other robot start : Now that i look at it, doesn't this robot start first
+    msleep(1000); //Let other robot start
 }
 
 
@@ -237,27 +234,30 @@ void starter(){
 // Ends: 
 
 void posForPickup(){
-    // drive forward past the starting box
-    drive(200, 200, 600);
-    // drive until black line
+       create_drive_direct(200, 200);
+    msleep(600);
     while (get_create_lfcliff_amt() > black){
         wallFollowleft();
-    }
-    // go forward to push the yellow and blue cube out of the way   
+        msleep(1);
+    }  
     double t = seconds()+1.7;
     while (seconds()<t){ 
         wallFollowleft();
+        msleep(1);
     }
-    // reposition to follow the line
-    drive(-100, -100, 900);
 
-    // rotate clockwise and align with the black line
+    create_drive_direct(-100, -100);
+    msleep(900);
+
+    //Get onto the vertical black line
     while (get_create_lfcliff_amt() > black){
-        drive(200, -200, 1);
+        create_drive_direct(200, -200);
+        msleep(1);
     }
-    msleep(10);
+    msleep(10); 
+    //Get onto the vertical black line   
 
-    // follow the wall until both bump sensors are depressed 
+    //Get to the wall where the cylinder is
     while (!get_create_lbump() && !get_create_rbump()){
         if(get_create_lfcliff_amt() < black &&  get_create_rfcliff_amt() > black)
         { 
@@ -274,7 +274,7 @@ void posForPickup(){
     }
     msleep(10);
 
-    // back up to set up for picking up the cylinder
+    //Back up to set up for picking up the cylinder
     t = seconds()+2.2;
     while (seconds()<t){ 
         if(get_create_lfcliff_amt() < black &&  get_create_rfcliff_amt() > black)
@@ -298,11 +298,9 @@ void posForPickup(){
 // Ends: 
 
 void pickUpPipe(){
-	
-    //Bring down the arm 
+	//Bring down the arm until the lever switch
     set_servo_position(raise, atLevel);
     msleep(300);
-
     //Pick up and lift out the cylinder backing up a bit
     while (!(digital(push))){
         if(get_create_lfcliff_amt() < black &&  get_create_rfcliff_amt() > black)
@@ -321,10 +319,7 @@ void pickUpPipe(){
     stop(400);
     ao();
     msleep(100);
-    
-    // raise the servo
-    servoSlowRaise(atLevel, atUp);
-    // back out a little
+    servoSlowRaise(atLevel,atUp);
     drive(-150, -150, 150);
 }
 
@@ -333,13 +328,12 @@ void pickUpPipe(){
 // Ends: 
 
 void moveToPipeZone(){
-
     //Turn onto the black line
     turn(180, right, -60); 
     stop(200);
 
 
-    // lineFollow until the roomba hits the wall
+    //LineFollow while the roomba has not hit the wall
     while (!get_create_lbump() && !get_create_rbump()){
         if( (get_create_lfcliff_amt() < black) &&  get_create_rfcliff_amt() > black)
         { 
@@ -355,48 +349,23 @@ void moveToPipeZone(){
         }
     }
     ao();
-
-    // turn to prepare to wall follow
+    //Back up a bit and turn to set up the wallfollow owo
     drive(-200, 200, 1000);
-
-	// wallfollow until we get to the right corner box 
-    
-    /* For loop to replace this code?
-    for(int i = 0, i < 2, ++i){
-        while (get_create_rfcliff_amt() > black){
-            wallFollowright();
-        }
-        drive(200, 200, 200);
-    }
-    while (get_create_rfcliff_amt() > black){
-        wallFollowright();
-    }
-    drive(200, 200, forwardbl);
-
-    */
-    // actually now that i look at this its really dumb
-    // reminder to flex finding a use for a for loop to lennard
-
-    // skip line one
+	 //Wallfollow until we get to the right corner box owo
     while (get_create_rfcliff_amt() > black){
         wallFollowright();
     }
     drive(200, 200, 200);
-
-    // skip line two
     while (get_create_rfcliff_amt() > black){  
         wallFollowright();
     }
     drive(200, 200, 200);
 
-    // locate the line in the right corner
     while (get_create_rfcliff_amt() > black){
         wallFollowright();
     }
 	drive(200, 200, forwardbl);
     stop(200);
-
-    // turn to face away from the final pipe location
     turn(90, left, 0);
 	stop(200);
 	ao();
@@ -409,30 +378,20 @@ void moveToPipeZone(){
 void putFirstPipeOn(){
 
 	stop(1000);
-
-    // drive forward a set distance so the orange pipe fits cleanly on
 	drive(200, 200, forward);
     stop(1300);
 	ao();
-
-    // lower the pipe
 	servoSlowLower(atUp,atPipe);
 	msleep(200);
   	stop(100);
 	ao();
 	msleep(100);
-	
-    // turn the pipe 
-    set_servo_position(turner, vertical);
+	set_servo_position(turner, vertical);
 	msleep(200);
 	ao();
 	msleep(100);
-
-    // rotate and place the pipe on
-    turn(180, left, 0); 
+    turn(180, left, 30); 
 	stop(1000);
-
-    // back up leaving the pipe 
     drive(-250, -250, 700);
 }
 
@@ -441,19 +400,10 @@ void putFirstPipeOn(){
 // Ends: 
 
 void alignForPipe2(){
-
-// am i autistic or is this line a duplicate?
-// maybe just combine the msleep between the two
-// Good readability???
 	drive(-250, -250, 700);
-
-    // msleeps for safety 
-    // raise the tireclaw so its out of the way
     msleep(100); //line added during cleanup 
 	set_servo_position(raise, atUp);
 	msleep(200);
-    
-// alignment code i cant understand at 12:10
     turn(180, left, 0);
     stop(500);
 	drive(-250, -250, 900);
@@ -468,92 +418,62 @@ void alignForPipe2(){
     turn(90, left, 0);
     stop(500);
    	drive(-150, -150, 2700);
-    drive(200, 0, 200);
+    drive(200, 0, 300);
     while(!get_create_rbump()){
         drive(100, 100, 1);
     }
-    drive(-200, 0, 200);
+    drive(-200, 0, 400);
     stop(100);
     drive(-150, -150, 3200);
-// end of alighment code i cant understand at 12:10
 }
 
 // Starting Position:
 // Function: Follows the left wall, aligns, then picks up the pipe
 // Ends: Aligned with the wall 
-
 void getPipe2(){
-    
-    // skip the first black line
     while (get_create_rcliff_amt() > black){  
-        secondWallFollowright();
+        wallFollowright();
     }
     drive(200, 200, 200);
-    
-    // find the second black line while wall following
     while (get_create_rfcliff_amt() > black){  
-        secondWallFollowright();
+        wallFollowright();
     }
     stop(400);
     
-    // drive forward a bit
     drive(200, 200, 900);
     stop(100);
-
-    // pivot a tad
     drive(0, 200, 100);
-    
-    // backup to the black line 
     while(get_create_lcliff_amt() > black){
         drive(-200, -200, 1);
     }
     stop(100);
-
-    // finish aligning
     while(get_create_rcliff_amt() > black){
         drive(0, -100, 1);
     }
     stop(100);
 
-// wait the servo is already up
-// lennard you are legitimatly smacked
-// you idiot read your own fucking code
-// you are a big monkey
-
     msleep(100); // added during cleanup 
     set_servo_position(raise,atUp);
     msleep(400);
 
-    // i really have no idea what this is doing 
-    // rotate the tire claw ??
     set_servo_position(turner, horizontal);
     msleep(400);
-
-    // position to drive straight at the pipe 
     drive(-200, 0, pivot);
     stop(300);
-    
-    // position the tireclaw to grab the claw
+    msleep(100); // added during cleanup
     set_servo_position(raise,atLevel);
     msleep(400);
-
-    // drive till the push button gets hit
     while(!(digital(push))){
         drive(200, 200, 1);
     }
     stop(200);
-
-    // raise the claw up with pipe in tow
+    msleep(100); // added during cleanup
     servoSlowRaise(atLevel, atUp);
     msleep(200);
-
-    // back up from the pipe
     while(get_create_lcliff_amt() > black){
         drive(-200, -200, 1);
     }
     stop(100);
-
-    // re-align with the black line
     while(get_create_rcliff_amt() > black){
         drive(0, -200, 1);
     }
@@ -566,75 +486,60 @@ void getPipe2(){
 // Ends: 
 
 void getWashers(){
-
-// FIX THE HARD CODED MOTOR PORT
-
-    
-    // turn around
-    turn(180, left, 0);
-    stop(100);
-
-    // ensure the washer motor is at its lowest postition
+	create_drive_direct(-200,200);
+    msleep(semi);
+    create_drive_direct(0,0);
+    msleep(100);
     mav(0,700);
     msleep(800);
-    
-    // ensure the washer claw is pushing against the pvc pipe
-    mav(0,1); // FIX THIS ACTUAL HARD CODE!!!!!!!!
-// is the 1 to keep current flowing? Guiermo asks
-// Sorry for butchering your name
+    mav(0,1);
     msleep(100);
-	
-    // backup pushing the washers to the magnite
-    drive(-200, -200, 1280);
-    stop(100);
-
-    // bring the washer claw down
+	create_drive_direct(-200,-200);
+    msleep(1370);
+    create_drive_direct(0,0);
+    msleep(100);
     mav(0,-700);
     msleep(800);
-// make this 1 below negative? i think that makes sense, you make that call lennard
     mav(0,1);
     msleep(100);
 
-    //drive forward a past the middle pvc pipe
-    drive(200, 205, 1800);
-    stop(100);
-
-    // put the washer claw up 
+    create_drive_direct(200,205);
+    msleep(1900);
+    create_drive_direct(0,0);
+    msleep(100);
     mav(0,700);
     msleep(800);
-
-// keep the current flowing ?
     mav(0,1);
     msleep(100);
-	
-    // drive forward pushing the washer to the magnet
-    drive(200, 220, 1290);
-    stop(100);
-
-    //bring the washer claw down
+	create_drive_direct(200,220);
+    msleep(1350);
+    create_drive_direct(0,0);
+    msleep(100);
     mav(0,-700);
     msleep(800);
-// keep current flowing ?
     mav(0,1);
     msleep(100);
     
-    // backup 
-    drive(-200, -200, 1200);
-    stop(100);
-
-// what the actual fuck does this do?
-    drive(0, 200, 300);
-    stop(100);
-
-    // align on the black line
+    create_drive_direct(-200, -200);
+    msleep(1200);
+    create_drive_direct(0,0);
+    msleep(100);
+    create_drive_direct(0,200);
+    msleep(300);
+    create_drive_direct(0,0);
+    msleep(100);
     while (get_create_rcliff_amt() > black){
-        drive(200, 200, 1);
+        create_drive_direct(200,200);
+    	msleep(1);
     }
-    stop(100);
+    create_drive_direct(0,0);
+    msleep(100);
     while (get_create_lcliff_amt() > black){
-        drive(200, 0, 1);
+        create_drive_direct(200,0);
+    	msleep(1);
     }
-    stop(100);
+    create_drive_direct(0,0);
+    msleep(100);
 }
 
 // Starting Position:
@@ -642,26 +547,16 @@ void getWashers(){
 // Ends: 
 
 void putSecondPipeOn(){
-	
-    // drive forward a hardcoded amount
-    drive(200, 200, forward2);
+	drive(200, 200, forward2);
     stop(300);
-
-    // pivot a hardcoded amount
     drive(0, 200, 500);
     stop(300);
-    
-    // put the servo down
     servoSlowLower(atUp,atPipe);
     msleep(200);
     stop(300);
-    
-    // turn the tire claw
     set_servo_position(turner,vertical);
     msleep(200);
     stop(300);
-    
-    // turn in order to put the pipe on
     drive(200, -200, 300);
 	stop(300);
     drive(200, 0, 200);
@@ -671,8 +566,8 @@ void putSecondPipeOn(){
 // Runs the other functions in tandem
 int main() {
     init();
-    starter();
-	posForPickup();
+    //starter();
+    posForPickup();
 	pickUpPipe();
 	moveToPipeZone();
     putFirstPipeOn();
