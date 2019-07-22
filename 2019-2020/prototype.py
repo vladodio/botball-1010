@@ -78,3 +78,40 @@ class legobot():
 """
 class drone():
 
+
+"""
+
+class config():
+
+	def __init__(self, pathOfConfig):
+		try:
+			self.config = open(pathOfConfig, r)
+		except:
+			print("VALID FILE????")
+
+	def __del__(self):
+		#idk i dont think i need a destructor?
+		print("Config Destroyed")
+
+	def get(self, header, variable):
+		#ranges on searches are prob off
+		i=0
+		p=0
+		line=""
+		while(True):
+			line=self.config.readline(i)
+			if(line[0] == "["): # intent: look at the first character of the line
+				if(line[0:] == ("[" + header + "]") ): # intent: compare the header to the defined header
+					++i
+					while(True):
+						line=self.config.readline(i) # intent: continue to look at the lines below the heading
+						if(line[0] == "[" or line[0] == "<"): # intent: second check is too look for end of file character
+							raise Exception("Variable not found in config file.")
+						try: # intent: make sure the code doesn't error if one line is shorter than the given var
+							if(line[0:len(variable)+1] == variable):
+								return(line[len():i])
+						except:
+							pass
+						i++
+			i++
+		
