@@ -1,13 +1,28 @@
 [Documentation]
 
-[Create]
+[Importing the package]
+	import prototype as p
+	^this assumes the files are in the same directory
 
+[Create]
+	Controls the Create
+
+	Create a Create object:
+		roomba = p.create(logger-object)
+		pass no value to the constructor if you would 
+		like to disable logging
 
 [Legobot]
+	Controls the Legobot
+
+	Create a Legobot object:
+		legobot = p.legobot(logger-object)
+		pass no value to the constructor if you would 
+		like to disable logging		
 
 
 [Config Reader]
-	Reads values from a file returning
+	Reads values from a file
 
 	Create a config object:
 		C = prototype.config("Path-to-the-config")
