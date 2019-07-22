@@ -1,10 +1,13 @@
+# for driving motors and stuff
 import kipr.shitty.module.py
 
+# for logging
+from time import time as cTime
 
 #import threading ??
 # maybe i'll just build the threading into these funtions?
-# uses for threading:
-# moveNoWait? 
+# good naming convention??
+# moveWithThread?
 #
 
 
@@ -15,8 +18,12 @@ import kipr.shitty.module.py
 class create():
 
 
-	def __init__(self, R, L):
+	def __init__(self, logger="none"):
 		enable_servos()
+		if(isinstance(logger, str)):
+			self.loggingEnabled=False
+		else:
+			self.loggingEnabled=True
 
 	def __del__(self):
 		disable_servos()		 
@@ -59,7 +66,7 @@ class create():
 class legobot():
 
 
-	def __init__(self):
+	def __init__(self, R, L, logger):
 		self.Rmotor=R
 		self.Lmotor=L
 		enable_servos()
@@ -83,35 +90,66 @@ class drone():
 
 class config():
 
-	def __init__(self, pathOfConfig):
-		try:
-			self.config = open(pathOfConfig, r)
-		except:
-			print("VALID FILE????")
+        def __init__(self, pathOfConfig="/home/alex/config.ini"):
+                try:
+                        self.config = open(pathOfConfig, "r")
+                except:
+                        print("VALID FILE????")
 
-	def __del__(self):
-		#idk i dont think i need a destructor?
-		print("Config Destroyed")
+        def __del__(self):
+                self.config.close()
 
-	def get(self, header, variable):
-		#ranges on searches are prob off
-		i=0
-		p=0
-		line=""
-		while(True):
-			line=self.config.readline(i)
-			if(line[0] == "["): # intent: look at the first character of the line
-				if(line[0:] == ("[" + header + "]") ): # intent: compare the header to the defined header
-					++i
-					while(True):
-						line=self.config.readline(i) # intent: continue to look at the lines below the heading
-						if(line[0] == "[" or line[0] == "<"): # intent: second check is too look for end of file character
-							raise Exception("Variable not found in config file.")
-						try: # intent: make sure the code doesn't error if one line is shorter than the given var
-							if(line[0:len(variable)+1] == variable):
-								return(line[len():i])
-						except:
-							pass
-						i++
-			i++
-		
+        def get(self, header, variable, returnType="f"):
+                #ranges on searches are prob off
+                headerFound=False
+                valueLength=0
+                isolatedValue=""
+                found=False
+                try:
+                        for line in self.config:
+                                if(not headerFound and ("[" == line[0]) and (line[1:len(header)+2] == (header + "]"))):
+                                        headerFound=True
+                                        continue
+                                if(headerFound and line[0] == "["):
+                                        break
+                                if(headerFound and (line[:len(variable)+1] == (variable + "="))):
+                                        valueLength=len(line)-len(variable)-1
+                                        print(line[-valueLength:])
+                                        print(valueLength)
+                                        isolatedValue=line[-valueLength:]
+                                        found=True
+                                        break
+                except:
+                        pass
+
+                if(not headerFound):
+                        raise Exception("Header not found.")
+                if(not found):
+                        raise Exception("Variable was not found.")
+
+                if(returnType=="f"):
+                        return(float(isolatedValue))
+                elif(returnType=="i"):
+                        return(int(isolatedValue))
+                elif(returnType=="s"):
+                        return(isolatedValue)
+                else:
+                        return(isolatedValue)
+
+
+class logger():
+
+        def __init__(self, folder="/home/alex/"):
+                try:
+                        self.logFile = open(folder+"latest-run.log", "w")
+                except:
+                        raise Exeception("Unable to open Logfile")
+                self.startTime = cTime()
+                self.logFile.write("[ 0.000 ] Start of Log.\n")
+
+        def __del__(self):
+                self.write("End Of Log.")
+                self.logFile.close
+
+        def write(self, info):
+                self.logFile.write( "[ " + ("%.3f" %(cTime() - self.startTime )) + " ] " + info + "\n")
