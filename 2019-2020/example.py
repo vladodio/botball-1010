@@ -1,8 +1,12 @@
-#import kipr's package
+# import kipr's package
 import prototype as p
 
-c = p.config()
-L = p.logger()
+# assigns all the values from the config file
+import config
 
-bot = p.legobot(c.get("Ports", "Rmotor"), c.get("Ports", "Lmotor"), L)
+# create a logger object
+log = p.logger()
+
+
+bot = p.legobot(Rmotor, Lmotor, log)
 bot.move(100, 100, 400)
