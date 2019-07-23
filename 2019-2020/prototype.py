@@ -61,7 +61,7 @@ class create():
 	def wallfollowR(self, T):
 
 
-
+"""
 
 class legobot():
 
@@ -81,6 +81,7 @@ class legobot():
 	def stop(self, time=.005):
 		mav()
 
+"""
 # drones?
 """
 class drone():
@@ -90,66 +91,85 @@ class drone():
 
 class config():
 
-        def __init__(self, pathOfConfig="/home/alex/config.ini"):
-                try:
-                        self.config = open(pathOfConfig, "r")
-                except:
-                        print("VALID FILE????")
+    def __init__(self, pathOfConfig="/home/alex/config.ini"):
+        try:
+            self.config = open(pathOfConfig, "r")
+        except:
+            print("VALID FILE????")
 
-        def __del__(self):
-                self.config.close()
+    def __del__(self):
+        self.config.close()
 
-        def get(self, header, variable, returnType="f"):
-                #ranges on searches are prob off
-                headerFound=False
-                valueLength=0
-                isolatedValue=""
-                found=False
-                try:
-                        for line in self.config:
-                                if(not headerFound and ("[" == line[0]) and (line[1:len(header)+2] == (header + "]"))):
-                                        headerFound=True
-                                        continue
-                                if(headerFound and line[0] == "["):
-                                        break
-                                if(headerFound and (line[:len(variable)+1] == (variable + "="))):
-                                        valueLength=len(line)-len(variable)-1
-                                        print(line[-valueLength:])
-                                        print(valueLength)
-                                        isolatedValue=line[-valueLength:]
-                                        found=True
-                                        break
-                except:
-                        pass
+    def get(self, header, variable, returnType="f"):
+        #ranges on searches are prob off
+        headerFound=False
+        valueLength=0
+        isolatedValue=""
+        found=False
+        try:
+            for line in self.config:
+                if(not headerFound and ("[" == line[0]) and (line[1:len(header)+2] == (header + "]"))):
+                    headerFound=True
+                    continue
+                if(headerFound and line[0] == "["):
+                    break
+                if(headerFound and (line[:len(variable)+1] == (variable + "="))):
+                    valueLength=len(line)-len(variable)-1
+                    print(line[-valueLength:])
+                    print(valueLength)
+                    isolatedValue=line[-valueLength:]
+                    found=True
+                    break
+        except:
+            pass
 
-                if(not headerFound):
-                        raise Exception("Header not found.")
-                if(not found):
-                        raise Exception("Variable was not found.")
+        if(not headerFound):
+            raise Exception("Header not found.")
+        if(not found):
+            raise Exception("Variable was not found.")
 
-                if(returnType=="f"):
-                        return(float(isolatedValue))
-                elif(returnType=="i"):
-                        return(int(isolatedValue))
-                elif(returnType=="s"):
-                        return(isolatedValue)
-                else:
-                        return(isolatedValue)
+        if(returnType=="f"):
+            return(float(isolatedValue))
+        elif(returnType=="i"):
+            return(int(isolatedValue))
+        elif(returnType=="s"):
+            return(str(isolatedValue))
+        else:
+            return(isolatedValue)
 
 
 class logger():
 
         def __init__(self, folder="/home/alex/"):
-                try:
-                        self.logFile = open(folder+"latest-run.log", "w")
-                except:
-                        raise Exeception("Unable to open Logfile")
-                self.startTime = cTime()
-                self.logFile.write("[ 0.000 ] Start of Log.\n")
+            try:
+                self.logFile = open(folder+"latest-run.log", "w")
+            except:
+                raise Exeception("Unable to open Logfile")
+            self.startTime = cTime()
+            self.logFile.write("[ 0.000 ] Start of Log.\n")
 
         def __del__(self):
-                self.write("End Of Log.")
-                self.logFile.close
+            self.write("End Of Log.")
+            self.logFile.close
 
         def write(self, info):
-                self.logFile.write( "[ " + ("%.3f" %(cTime() - self.startTime )) + " ] " + info + "\n")
+            self.logFile.write( "[ " + ("%.3f" %(cTime() - self.startTime )) + " ] " + info + "\n")
+
+        def writeNT(self, info):
+        	self.logFile.write(info+ "\n")
+
+       	def sensor(self, sensorName, sensorValue):
+       		self.write(sensorName+ "'s current value is " + sensorValue)
+
+        def fatalError(self, error):
+        	self.write("+++ FATAL ERROR +++")
+        	self.write(error)
+        	self.write("+++ END OF REPORT +++")
+
+       	def warning(self, error):
+       		self.write("*** warning ***")
+       		self.write(error)
+       		self.write("*** end of warning ***")
+
+
+
