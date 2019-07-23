@@ -1,2 +1,2 @@
 # botball-1010
-Explore Post 1010's BotBall Code.
+Explorer Post 1010's BotBall Code.
