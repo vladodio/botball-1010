@@ -1,8 +1,10 @@
 # for driving motors and stuff
-import kipr.shitty.module.py
+from wallaby import * 
 
 # for logging
 from time import time as cTime
+import sys
+
 
 #import threading ??
 # maybe i'll just build the threading into these funtions?
@@ -13,31 +15,48 @@ from time import time as cTime
 
 #import configparser
 # Maybe theres a better solution
-# ask in IBC?
+# ask in IBC? 
+
+
 
 class create():
 
-
-	def __init__(self, logger="none"):
+# setup and other core functions
+	def __init__(self, logger):
+		create_connect()
 		enable_servos()
-		if(isinstance(logger, str)):
-			self.loggingEnabled=False
-		else:
-			self.loggingEnabled=True
+		self.log=logger
+		self.log.write("ROOMBA OBJECT CREATED")
 
 	def __del__(self):
-		disable_servos()		 
+		disable_servos()
+		create_stop()
+		create_disconnect()
+		self.log.write("ROOMBA OBJECT DESTROYED")
+
+# note to self cTime returns a time is seconds
+# multiply by 100 for ms
+	def timer(self, T):
+		start = cTime()
+		end = start + T
+		while(end > cTime()):
 
 
+
+# base movement functions
+#figure out which side is left and which is right
 	def move(self, Lpower, Rpower, T):
 		create_drive_direct(Lpower, Rpower)
+		self.log.write("Moving with " + Lpower + " " + Rpower + "for " + T + "ms")
 		msleep(T)
 
 	def stop(self, T):
 		create_drive_direct(0, 0)
+		self.log.write("Stopping for " + T + " ms")
 		msleep(T)
 
 	def turn(self, degree, direction, power=200):
+		self.log.write("Turning to the" + direction + " " + degree +" degrees")
 		if( direction[0].lower() == "r"):
 # fix this
 			method_to_turn_right()
@@ -58,7 +77,7 @@ class create():
         	msleep(1)
 
 
-	def wallfollowR(self, T):
+
 
 
 """
@@ -82,61 +101,6 @@ class legobot():
 		mav()
 
 """
-# drones?
-"""
-class drone():
-
-
-"""
-
-class config():
-
-    def __init__(self, pathOfConfig="/home/alex/config.ini"):
-        try:
-            self.config = open(pathOfConfig, "r")
-        except:
-            print("VALID FILE????")
-
-    def __del__(self):
-        self.config.close()
-
-    def get(self, header, variable, returnType="f"):
-        #ranges on searches are prob off
-        headerFound=False
-        valueLength=0
-        isolatedValue=""
-        found=False
-        try:
-            for line in self.config:
-                if(not headerFound and ("[" == line[0]) and (line[1:len(header)+2] == (header + "]"))):
-                    headerFound=True
-                    continue
-                if(headerFound and line[0] == "["):
-                    break
-                if(headerFound and (line[:len(variable)+1] == (variable + "="))):
-                    valueLength=len(line)-len(variable)-1
-                    print(line[-valueLength:])
-                    print(valueLength)
-                    isolatedValue=line[-valueLength:]
-                    found=True
-                    break
-        except:
-            pass
-
-        if(not headerFound):
-            raise Exception("Header not found.")
-        if(not found):
-            raise Exception("Variable was not found.")
-
-        if(returnType=="f"):
-            return(float(isolatedValue))
-        elif(returnType=="i"):
-            return(int(isolatedValue))
-        elif(returnType=="s"):
-            return(str(isolatedValue))
-        else:
-            return(isolatedValue)
-
 
 class logger():
 
