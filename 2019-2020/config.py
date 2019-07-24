@@ -13,8 +13,8 @@ Lmotor =
 # [Power] #
 
 # [Sensors] #
-blackL"=
-whiteL"=
+blackL=
+whiteL=
 greyL=
 
 
