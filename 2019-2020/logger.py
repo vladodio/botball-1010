@@ -34,6 +34,10 @@ class logger:
 
 	def sensor(self, sensorName, sensorValue):
 		self.write(sensorName+ "'s current value is " + sensorValue)
+	
+	
+	def stop(self, T):
+		log.write("Stopping for " + T + " ms")
 
 
 	def fatalError(self, error):
