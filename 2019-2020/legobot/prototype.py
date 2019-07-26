@@ -32,27 +32,23 @@ from wallaby import *
 
 # setup and other core functions
 def init():
-	create_connect()
-	enable_servos()
-	log.write("ROOMBA OBJECT CREATED")
+	pass
 
 
 def disconnect():
-	disable_servos()
-	create_stop()
-	create_disconnect()
-	log.write("ROOMBA OBJECT DESTROYED")
-
+	pass
 
 # What side is gonna be right vs left????
 def move(Lpower, Rpower, T):
-	create_drive_direct(Lpower, Rpower)
+	mav(Lmotor, Lpower)
+	mav(Rmotor, Rpower)
 	log.motor(Lpower, Rpower)
 	msleep(T)
 
 
 def stop(self, T):
-	create_drive_direct(0, 0)
+	mav(Lmotor, 0)
+	mav(Rmotor, 0)
 	log.write("Stopping for " + T + " ms")
 	msleep(T)
 
@@ -63,25 +59,3 @@ def turn(degree, direction, power=200):
 		method_to_turn_right()
 	else:
 		method_to_turn_left()
-
-
-def wallfollow(direction, T):
-	eTime = cTime() + T
-	if(direction[0].lower() == "l" )
-		while(eTime > cTime()):
-			if(get_create_lbump() == 0):
-				create_drive_direct(100, 200)
-				msleep(5)
-			else:
-				create_drive_direct (200, 100)
-				msleep(5)
-			msleep(1)
-	else:
-		while(eTime > cTime()):
-			if(get_create_lbump() == 0):
-				create_drive_direct(200, 100)
-				msleep(5)
-			else:
-				create_drive_direct (100, 200)
-				msleep(5)
-			msleep(1)
