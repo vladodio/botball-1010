@@ -17,3 +17,7 @@ blackL=
 whiteL=
 greyL=
 
+# [Logging] #
+import logger
+loggingFolder="~/"
+log=logger.logger(loggingFolder)
