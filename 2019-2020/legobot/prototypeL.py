@@ -7,27 +7,6 @@ import logger
 # runs the config file
 import legobotConfig
 
-#import threading ??
-
-# To do list:
-
-# Do we actually need threading??
-# if we do can we use decorators for REASONS??
-
-# Figure out what the R&D department is gonna work on ^-^
-
-# Dan-CV (Or alternatives)
-
-# Optimization of the logger class is important
-# The amount of times its going to be called...
-
-# Gyro code?
-# And by extention calibration programs
-
-# Other
-
-# fix the log function 
-
 
 # setup and other core functions
 def init():
@@ -48,7 +27,7 @@ def move(Lpower, Rpower, T):
 def stop(self, T):
 	mav(Lmotor, 0)
 	mav(Rmotor, 0)
-	log.write("Stopping for " + T + " ms")
+	log.stop(T)
 	msleep(T)
 
 
