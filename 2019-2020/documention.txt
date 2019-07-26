@@ -7,18 +7,9 @@
 [Create]
 	Controls the Create
 
-	Create a Create object:
-		roomba = p.create(logger-object)
-		pass no value to the constructor if you would 
-		like to disable logging
 
 [Legobot]
 	Controls the Legobot
-
-	Create a Legobot object:
-		legobot = p.legobot(logger-object)
-		pass no value to the constructor if you would 
-		like to disable logging		
 
 
 [Logger]
