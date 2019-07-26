@@ -85,7 +85,7 @@ class create():
 
 	def wallfollowL(self, T):
 
-		while()
+		while(True):
 			if(get_create_lbump() == 0):
 				create_drive_direct(100, 200)
 				msleep(5)
