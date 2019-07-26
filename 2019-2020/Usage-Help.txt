@@ -21,21 +21,6 @@
 		like to disable logging		
 
 
-[Config Reader]
-	Reads values from a file
-
-	Create a config object:
-		C = prototype.config("Path-to-the-config")
-
-	Read a specified value from the config:
-		C.get("category", "the-variables-name", "return-type")
-	return-type can be f, i, s
-	f: float
-	i: integer
-	s: string
-	default is float
-
-
 [Logger]
 	Write helpful information to file allowing
 	debuging after run.
