@@ -1,7 +1,11 @@
 # for driving motors and stuff
 from wallaby import *
 
-#import threading ??
+# Imports the logger function 
+import logger
+
+# Runs the config file
+import createConfig
 
 # To do list:
 
