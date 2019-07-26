@@ -1,17 +1,7 @@
 # for driving motors and stuff
-#from wallaby import *
-from dummy import *
-# for logging
-from time import time as cTime
-import sys
-
+from wallaby import *
 
 #import threading ??
-# maybe i'll just build the threading into these funtions?
-# good naming convention??
-# moveWithThread?
-#
-
 
 # To do list:
 
@@ -46,58 +36,52 @@ def init():
 	enable_servos()
 	log.write("ROOMBA OBJECT CREATED")
 
+
 def disconnect():
 	disable_servos()
 	create_stop()
 	create_disconnect()
 	log.write("ROOMBA OBJECT DESTROYED")
 
-# note to self cTime returns a time is seconds
-# multiply by 100 for msleep
-def timer(self, T, func):
-	start = cTime()
-	end = start + T
-	while(end > cTime()):
-		func()
 
-
-# base movement functions
-#figure out which side is left and which is right
+# What side is gonna be right vs left????
 def move(Lpower, Rpower, T):
 	create_drive_direct(Lpower, Rpower)
-	self.log.write("Moving with " + Lpower + " " + Rpower + "for " + T + "ms")
+	log.motor(Lpower, Rpower)
 	msleep(T)
 
 
 def stop(self, T):
 	create_drive_direct(0, 0)
-	self.log.write("Stopping for " + T + " ms")
+	log.write("Stopping for " + T + " ms")
 	msleep(T)
 
-def turn(self, degree, direction, power=200):
-	self.log.write("Turning to the" + direction + " " + degree +" degrees")
+
+def turn(degree, direction, power=200):
+	log.write("Turning to the" + direction + " " + degree +" degrees")
 	if( direction[0].lower() == "r"):
-# fix this
 		method_to_turn_right()
 	else:
-# fix this also
 		method_to_turn_left()
 
 
-def wallfollowL(self, T):
-
-	while(True):
-		if(get_create_lbump() == 0):
-			create_drive_direct(100, 200)
-			msleep(5)
-		else:
-			create_drive_direct (200, 100)
-			msleep(5)
-		msleep(1)
-
-
-
-
-
-
-
+def wallfollow(direction, T):
+	eTime = cTime() + T
+	if(direction[0].lower() == "l" )
+		while(eTime > cTime()):
+			if(get_create_lbump() == 0):
+				create_drive_direct(100, 200)
+				msleep(5)
+			else:
+				create_drive_direct (200, 100)
+				msleep(5)
+			msleep(1)
+	else:
+		while(eTime > cTime()):
+			if(get_create_lbump() == 0):
+				create_drive_direct(200, 100)
+				msleep(5)
+			else:
+				create_drive_direct (100, 200)
+				msleep(5)
+			msleep(1)
