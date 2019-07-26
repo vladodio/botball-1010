@@ -1,7 +1,7 @@
 [Documentation]
 
-[Importing the package]
-	import prototype as p
+[Importing a package]
+	import nameOfThePackage as p
 	^this assumes the files are in the same directory
 
 [Create]
