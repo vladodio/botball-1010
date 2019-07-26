@@ -28,14 +28,14 @@ import createConfig
 def init():
 	create_connect()
 	enable_servos()
-	log.write("ROOMBA OBJECT CREATED")
+	log.write("ROOMBA CONNECTED")
 
 
 def disconnect():
 	disable_servos()
 	create_stop()
 	create_disconnect()
-	log.write("ROOMBA OBJECT DESTROYED")
+	log.write("ROOMBA DISCONNECTED")
 
 
 # What side is gonna be right vs left????
@@ -47,7 +47,7 @@ def move(Lpower, Rpower, T):
 
 def stop(self, T):
 	create_drive_direct(0, 0)
-	log.write("Stopping for " + T + " ms")
+	log.stop(T)
 	msleep(T)
 
 
