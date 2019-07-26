@@ -1,32 +1,48 @@
-class logger():
+from time import time as cTime
+# To do:
+# 	 Properly do log file naming
+#    maybe use datetime (Not that type of datetime you mong)
 
-	def __init__(self, folder="/home/alex/"):
+class logger:
+
+
+	def __init__(self, folder="~/logs/"):
 		try:
 			self.logFile = open(folder+"latest-run.log", "w")
 		except:
 			raise Exeception("Unable to open destination folder.")
 		self.startTime = cTime()
-		self.logFile.write("[ 0.000 ] Start of Log.\n")
+		self.logFile.write("[ 0.00 ] Start of Log.\n")
+
 
 	def __del__(self):
 		self.write("End Of Log.")
-		self.logFile.close
+		self.logFile.close()
+
 
 	def write(self, info):
-		self.logFile.write( "[ " + ("%.3f" %(cTime() - self.startTime )) + " ] " + info + "\n")
+		self.logFile.write( "[ " + ("%.2f" %(cTime() - self.startTime )) + " ] " + info + "\n")
+
 
 	def writeNT(self, info):
 		self.logFile.write(info+ "\n")
 
+
+	def motor(self, Lpower, Rpower, T):
+		self.write("Moving with L: " + Lpower + " R: " + Rpower + " for " + T + "seconds")
+
+
 	def sensor(self, sensorName, sensorValue):
 		self.write(sensorName+ "'s current value is " + sensorValue)
 
+
 	def fatalError(self, error):
-		self.write("+++ FATAL ERROR +++")
+		self.writeNT("+++ FATAL ERROR +++")
 		self.write(error)
-		self.write("+++ END OF REPORT +++")
+		self.writeNT("+++ END OF REPORT +++")
+
 
 	def warning(self, error):
-		self.write("*** warning ***")
+		self.writeNT("*** warning ***")
 		self.write(error)
-		self.write("*** end of warning ***")
+		self.writeNT("*** end of warning ***")
