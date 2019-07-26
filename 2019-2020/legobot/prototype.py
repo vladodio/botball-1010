@@ -1,17 +1,18 @@
 # for driving motors and stuff
 from wallaby import *
 
+# imports the logger function
+import logger
+
+# runs the config file
+import legobotConfig
+
 #import threading ??
 
 # To do list:
 
 # Do we actually need threading??
 # if we do can we use decorators for REASONS??
-
-# maybe the class approch was flawed
-# in honestly theres not much it needs to be referenced
-# only difficult part would be the logging
-# decorators to the rescue??
 
 # Figure out what the R&D department is gonna work on ^-^
 
@@ -24,8 +25,6 @@ from wallaby import *
 # And by extention calibration programs
 
 # Other
-
-
 
 # fix the log function 
 
