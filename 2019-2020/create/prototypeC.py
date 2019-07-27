@@ -23,7 +23,6 @@ import createConfig
 
 # fix the log function 
 
-
 # setup and other core functions
 def init():
 	create_connect()
@@ -60,7 +59,7 @@ def turn(degree, direction, power=200):
 
 
 def wallfollow(direction, T):
-	eTime = cTime() + T
+	eTime = cTime() + (T/1000)
 	if(direction[0].lower() == "l" )
 		while(eTime > cTime()):
 			if(get_create_lbump() == 0):
