@@ -16,10 +16,21 @@
 *
 
 [Create]
-* move(Lpower, Rpower, T) = moves the roomba
-* stop(T) = stops the roomba
-* turn(degree, direction, Mpower) = turns the roomba x degrees. direction: (right or left) 
-
+* moves the roomba
+  ```python
+  move(Lpower, Rpower, T)
+  ```
+  
+* stops the roomba
+  ```python
+  stop(T)
+  ```
+  
+* turns the roomba x degrees. direction: (right or left) 
+  ```python 
+  turn(degree, direction, Mpower)
+  ```
+  
 [Legobot]
 * move(Lpower, Rpower, T) = moves the legobot
 * stop(T) = stops the legobot
