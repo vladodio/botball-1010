@@ -1,9 +1,8 @@
 [Documentation]
-
-
-
-
-
+ 
+ 
+ 
+ 
 [General Function Rules]
 * Any function that takes Left and Right parameters will have its first two parameters (L, R)
 * Time is always in milliseconds
