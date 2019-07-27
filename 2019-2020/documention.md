@@ -26,6 +26,7 @@
 * turn(degree, direction, Mpower) = turns the legobot x degrees. direction: (right or left) 
 
 [Logger]
+
 Write helpful information to file allowing
 debuging after run.
 
