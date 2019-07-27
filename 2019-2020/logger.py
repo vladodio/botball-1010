@@ -11,18 +11,23 @@ class logger:
 			self.logFile = open(folder+"latest-run.log", "w")
 		except:
 			raise Exeception("Unable to open destination folder.")
-		self.startTime = cTime()
-		self.logFile.write("[ 0.00 ] Start of Log.\n")
-
+		self.logFile.write("LOG CREATED")
 
 	def __del__(self):
 		self.write("End Of Log.")
 		self.logFile.close()
+		
+		
+	def start(self):
+		self.startTime = cTime()
+		self.logFile.write("[ 0.00 ] Clock Started.\n")
 
-
+# maybe its not worth using the try/catch: efficency
 	def write(self, info):
-		self.logFile.write( "[ " + ("%.2f" %(cTime() - self.startTime )) + " ] " + info + "\n")
-
+		try:
+			self.logFile.write( "[ " + ("%.2f" %(cTime() - self.startTime )) + " ] " + info + "\n")
+		except:
+			self.writeNT(info)
 
 	def writeNT(self, info):
 		self.logFile.write(info+ "\n")
