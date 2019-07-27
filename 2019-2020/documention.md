@@ -1,20 +1,20 @@
 [Documentation]
-
+---
 [General Function Rules]
 * Any function that takes Left and Right parameters will have its first two parameters (L, R)
 * Time is always in milliseconds
 * ... 
-
+---
 [Reserved Variables]
 * ```T = used for time```
 * ```log = refers to the logger object```
 * ...
-
+---
 [Importing a package]
 * Uhhhh i should probably write something here
 *
 *
-
+---
 [Create]
 * moves the roomba
   ```python
@@ -30,7 +30,7 @@
   ```python 
   turn(degree, direction, Mpower)
   ```
-  
+---  
 [Legobot]
 * moves the legobot
   ```python
@@ -46,7 +46,7 @@
   ```python 
   turn(degree, direction, Mpower)
   ```
-
+---
 [Logger]
 
 Write helpful information to file allowing
