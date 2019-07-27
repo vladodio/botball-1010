@@ -30,19 +30,19 @@ Write helpful information to file allowing
 debuging after run.
 
 * Create an logger object:
-* L = prototype.logger("Log-Folders-absolute-path")
+  * L = prototype.logger("Log-Folders-absolute-path")
 
 * Write a message with a timestamp:
-* L.write("message")
+  * L.write("message")
 
 * Write a message without a timestamp:
-* L.writeNT("message")
+  * L.writeNT("message")
 
 * Writing a sensor value:
-* L.sensor("Name-of-the-sensor", the-sensors-current-value)
+  * L.sensor("Name-of-the-sensor", the-sensors-current-value)
 
 * Write an error message to the file:
-* L.fatalError(str(e))
+  * L.fatalError(str(e))
 
 * Write a warning to the file
-** L.warning("warning")
+  * L.warning("warning")
