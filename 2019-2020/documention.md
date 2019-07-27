@@ -1,8 +1,5 @@
 [Documentation]
- 
- 
- 
- 
+
 [General Function Rules]
 * Any function that takes Left and Right parameters will have its first two parameters (L, R)
 * Time is always in milliseconds
@@ -37,7 +34,7 @@ debuging after run.
   * L = prototype.logger("Log-Folders-absolute-path")
 
 * Write a message with a timestamp:
-  * L.write("message")
+  * `L.write("message")`
 
 * Write a message without a timestamp:
   * L.writeNT("message")
