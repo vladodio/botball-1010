@@ -34,7 +34,7 @@ debuging after run.
   * L = prototype.logger("Log-Folders-absolute-path")
 
 * Write a message with a timestamp:
-  * ```python 
+  ```python 
   L.write("message")
   ```
 
