@@ -1,4 +1,5 @@
 from time import time as cTime
+from datetime import datetime
 # To do:
 # 	 Properly do log file naming
 #    maybe use datetime (Not that type of datetime you mong)
@@ -7,8 +8,11 @@ class logger:
 
 
 	def __init__(self, folder="~/logs/"):
+		currTime=datetime.now().strftime('%d-%H:%M')
+		if(folder[-1] != '/'):
+			folder = folder+"/"
 		try:
-			self.logFile = open(folder+"latest-run.log", "w")
+			self.logFile = open(folder+"log-"+currTime+".log", "w")
 		except:
 			raise Exeception("Unable to open destination folder.")
 		self.logFile.write("LOG CREATED")
