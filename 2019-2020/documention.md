@@ -56,6 +56,12 @@ debuging after run.
   ```python 
   L = prototype.logger("Log-Folders-absolute-path")
   ```
+  
+* Start the timer:
+  ```python
+  	 L.start()
+  ```
+  
 * Write a message with a timestamp:
   ```python 
   L.write("message")
