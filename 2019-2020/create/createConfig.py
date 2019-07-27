@@ -5,8 +5,6 @@
 # 		Is it worth throwing away readability for the sake of
 # 		the config auto updating based on a calibrate
 
-import logger
-
 # [Roomba] #
 
 # [Ports] #
@@ -19,5 +17,6 @@ whiteR=
 greyR=
 
 # [Logging] #
+import logger
 loggingFolder="~/"
 log=logger.logger(loggingFolder)
