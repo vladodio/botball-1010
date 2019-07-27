@@ -6,8 +6,8 @@
 * ... 
 
 [Reserved Variables]
-* T = used for time
-* log = refers to the logger object
+* ```T = used for time```
+* ```log = refers to the logger object```
 * ...
 
 [Importing a package]
@@ -32,9 +32,20 @@
   ```
   
 [Legobot]
-* move(Lpower, Rpower, T) = moves the legobot
-* stop(T) = stops the legobot
-* turn(degree, direction, Mpower) = turns the legobot x degrees. direction: (right or left) 
+* moves the legobot
+  ```python
+  move(Lpower, Rpower, T)
+  ```
+  
+* stops the legobot
+  ```python
+  stop(T)
+  ```
+  
+* turns the legobot x degrees. direction: (right or left) 
+  ```python 
+  turn(degree, direction, Mpower)
+  ```
 
 [Logger]
 
