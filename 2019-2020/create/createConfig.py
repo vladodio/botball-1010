@@ -12,11 +12,9 @@
 # [Power] #
 
 # [Sensors] #
-blackR=
-whiteR=
-greyR=
+#blackR=
+#whiteR=
+#greyR=
 
 # [Logging] #
-import logger
-loggingFolder="~/"
-log=logger.logger(loggingFolder)
+loggingFolder=""
