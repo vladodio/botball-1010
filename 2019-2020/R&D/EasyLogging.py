@@ -65,5 +65,5 @@ def printf(*args, **kwargs):
 			output += " " + str(item)
 		print("intended output:" + output)
 
-
+# mem cleanup
 del _fileCount,_logLocation,_fileList,_logFolder
