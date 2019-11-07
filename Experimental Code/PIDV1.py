@@ -19,7 +19,7 @@ def pid(Kp,Ki,Kd):
 	last_error = 0
 	output = 0
 	counter = 0
-	delta_time = .2
+	delta_time = .25
 
 	while(True):
 		currentTemp += output
@@ -42,5 +42,5 @@ def pid(Kp,Ki,Kd):
 		else:
 			counter = 0
 		if(counter > 10):
-			return(float(int(time()*3)/3)-startTime)
-		print("PID output: "+str(output) + "  temp: " + str(currentTemp))
+			return(float(int(time()*7)/7)-startTime)
+		print("PID output: "+str(output)[0:7] + "  temp: " + str(currentTemp))
