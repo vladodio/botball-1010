@@ -6,16 +6,16 @@ from wallaby import *
 bias = -0.9162
 
 def main():
-    create_connect()
-    #calibrate_gyro(5000)
-    drive_with_gyro(300, 7000)
+    #create_connect()
+    calibrate_gyro(3000)
+    #drive_with_gyro(300, 7000)
 
 def calibrate_gyro(cycles):
     i = 0
     avg = 0
     while(i < cycles):
         avg += gyro_z()
-        msleep(5)
+        msleep(2)
         i += 1
     bias = avg / float(cycles)
     print(bias)
@@ -41,4 +41,20 @@ def drive_with_gyro(speed, time):
 if __name__== "__main__":
     sys.stdout = os.fdopen(sys.stdout.fileno(),"w",0)
     main();
-    
+
+
+
+void turn_with_gyro(int left_wheel_speed, int right_wheel_speed, double targetTheta)
+{
+    double theta = 0;//declares the variable that stores the current degrees
+    create_drive_direct(left_wheel_speed , right_wheel_speed);//starts the motors
+
+    //keeps the motors running until the robot reaches the desired angle
+    while(theta < targetTheta)
+    {
+        msleep(10);//turns for .01 seconds
+        theta += abs(gyro_z() - bias) * 10;//theta = omega(angular velocity, the value returned by gyroscopes) * time
+    }
+    //stops the motors after reaching the turn
+    create_drive_direct(0, 0);
+}
