@@ -4,11 +4,23 @@ from wallaby import *
 
 # for testing purposes
 bias = -0.9162
+turnConstant = 5500
+
+def sec():
+    return time()*1000 # this returns current time in miliseconds
+def sleep(T):
+    msleep(T) # sleeps for T miliseconds
+def drive(Lpower, Rpower):
+    current_right_power = Rpower
+    current_left_power =  Lpower
+    create_drive_direct(Lpower, Rpower)
 
 def main():
-    #create_connect()
-    calibrate_gyro(3000)
+    create_connect()
+    #calibrate_gyro(3000)
     #drive_with_gyro(300, 7000)
+    for i in range(4):
+        turn_with_gyro(200,-200,90*turnConstant)
 
 def calibrate_gyro(cycles):
     i = 0
@@ -40,8 +52,8 @@ def drive_with_gyro(speed, time):
 
 def turn_with_gyro(left_wheel_speed, right_wheel_speed, targetTheta):
 
-    double theta = 0
-    drive(left_wheel_speed , right_wheel_speed)
+    theta = 0
+    acc(left_wheel_speed , right_wheel_speed)
 
     while(theta < targetTheta):
         sleep(10)
