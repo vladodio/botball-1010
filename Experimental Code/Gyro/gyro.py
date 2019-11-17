@@ -32,29 +32,25 @@ def drive_with_gyro(speed, time):
     theta = 0
     while(seconds() - startTime < (time / 1000.0)):
         if(speed > 0):
-            create_drive_direct(int(speed + speed * (1.920137e-15 + 0.000004470956*theta - 7.399285e-28*(theta**2) - 2.054177e-18*(theta** 3) + 1.3145e-40*(theta** 4))) , int(speed - speed * (1.920137e-16 + 0.000004470956*theta - 7.399285e-28*(theta** 2) - 2.054177e-18*(theta** 3) + 1.3145e-40*(theta** 4))))
+            drive(int(speed + speed * (1.920137e-15 + 0.000004470956*theta - 7.399285e-28*(theta**2) - 2.054177e-18*(theta** 3) + 1.3145e-40*(theta** 4))) , int(speed - speed * (1.920137e-16 + 0.000004470956*theta - 7.399285e-28*(theta** 2) - 2.054177e-18*(theta** 3) + 1.3145e-40*(theta** 4))))
         else:
-            create_drive_direct(int(speed - speed * (1.920137e-15 + 0.000004470956*theta - 7.399285e-28*(theta**2) - 2.054177e-18**(theta** 3) + 1.3145e-40*(theta** 4))), int(speed + speed * (1.920137e-16 + 0.000004470956*theta - 7.399285e-28*(theta** 2) - 2.054177e-18*(theta** 3) + 1.3145e-40*(theta** 4))))
+            drive(int(speed - speed * (1.920137e-15 + 0.000004470956*theta - 7.399285e-28*(theta**2) - 2.054177e-18**(theta** 3) + 1.3145e-40*(theta** 4))), int(speed + speed * (1.920137e-16 + 0.000004470956*theta - 7.399285e-28*(theta** 2) - 2.054177e-18*(theta** 3) + 1.3145e-40*(theta** 4))))
         msleep(10)
         theta += (gyro_z() - bias) * 10
+
+def turn_with_gyro(left_wheel_speed, right_wheel_speed, targetTheta):
+
+    double theta = 0
+    drive(left_wheel_speed , right_wheel_speed)
+
+    while(theta < targetTheta):
+        sleep(10)
+        theta += abs(gyro_z() - bias) * 10
+    drive(0, 0)
+
+
 
 if __name__== "__main__":
     sys.stdout = os.fdopen(sys.stdout.fileno(),"w",0)
     main();
 
-
-
-void turn_with_gyro(int left_wheel_speed, int right_wheel_speed, double targetTheta)
-{
-    double theta = 0;//declares the variable that stores the current degrees
-    create_drive_direct(left_wheel_speed , right_wheel_speed);//starts the motors
-
-    //keeps the motors running until the robot reaches the desired angle
-    while(theta < targetTheta)
-    {
-        msleep(10);//turns for .01 seconds
-        theta += abs(gyro_z() - bias) * 10;//theta = omega(angular velocity, the value returned by gyroscopes) * time
-    }
-    //stops the motors after reaching the turn
-    create_drive_direct(0, 0);
-}
