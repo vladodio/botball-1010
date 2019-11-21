@@ -4,14 +4,14 @@ from wallaby import *
 
 # general function for moving
 def move(lPower, rPower, time=null):
-	mav(left_motor, lPower)
-	mav(right_motor, rPower)
-	try:
-		msleep(time)
-		mav(left_motor, 0)
-		mav(right_motor, 0)
-	except:
-		pass
+    mav(left_motor, lPower)
+    mav(right_motor, rPower)
+    try:
+        msleep(time)
+        mav(left_motor, 0)
+        mav(right_motor, 0)
+    except:
+        pass
 
 def turn(deg):
     pass
