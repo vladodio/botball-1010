@@ -1,3 +1,4 @@
+#!/usr/bin/python2
 # general purpose functions for Explorer Post 1010's botball team
 # create variant
 

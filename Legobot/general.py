@@ -1,27 +1,76 @@
+#!/usr/bin/python2
+
 # general purpose functions for Explorer Post 1010's botball team
 # legobot variant
+
+# imports
 from wallaby import *
 
+# constants
+left_motor = 0
+right_motor = 1
+pulley = 2
+
+toph_left = 0
+toph_right = 1
+toph_front = 2
+
+claw = 0
+opened = 100
+closed = 2000
+
+degrees_to_ticks = 6100
+gyroscope_bias = .217625
+
 # general function for moving
-def move(lPower, rPower, time=null):
-    mav(left_motor, lPower)
-    mav(right_motor, rPower)
+current_left_power = 0
+current_right_power = 0 
+current_theta = 0
+
+def move(Lpower, Rpower):
+    global current_right_power, current_left_power
+    current_left_power = Lpower
+    current_right_power = Rpower
+    mav(left_motor, Lpower)
+    mav(right_motor, Rpower)
+    msleep(1)
+
+def turn(targetDegrees, Lpower, Rpower, tickLength=10):
+    global current_theta
+    targetTheta = targetDegrees * degrees_to_ticks
+    move(Lpower,Rpower)
+    while(current_theta < targetTheta):
+        msleep(tickLength)
+        current_theta += abs(getGyroReading() - gyroscope_bias) * tickLength
+    stop()
+    current_theta = 0
+
+def stop(sleepTime=0):
+    move(0,0)
     try:
-        msleep(time)
-        mav(left_motor, 0)
-        mav(right_motor, 0)
+        msleep(sleepTime)
     except:
         pass
 
-def turn(deg):
-    pass
+def pause(sleepTime):
+    Lpower=current_left_power
+    Rpower=current_right_power
+    move(0,0)
+    msleep(sleepTime)
+    move(Lpower,Rpower)
 
-def turn_right_wheel(deg):
-    pass
 
-def turn_left_wheel(deg):
-    pass
+def go_to_black(Lpower=1000, Rpower=1000):
+    while(analog(toph_left) < 2000 or analog(toph_right) < 2000):
+        move(Lpower, Rpower)
+    stop()
 
+def go_to_white(Lpower=1000, Rpower=1000):
+    while(analog(toph_left) > 2000 or analog(toph_right) > 2000):
+        move(Lpower, Rpower)
+    stop()
+
+# code specific to the scrim
 def lower_pulley():
     set_servo_position(claw, open)
     msleep(500)
@@ -36,75 +85,13 @@ def raise_pulley():
     msleep(2400)
     mav(pulley, 0)
 
-def go_to_black():
-    while(analog(toph_left) < 2000 or analog(toph_right) < 2000):
-        move(1000, 1000)
-    stop()
-
-def go_to_white():
-    while(analog(toph_left) > 2000 or analog(toph_right) > 2000):
-        move(1000, 1000)
-    stop()
-
-def go_to_object():
-    for i in range(50):
-        camera_update()
-        msleep(1)
-    
-    while(get_object_count(yellow) = 0 or get_object_center_y(yellow) > 70):
-        camera_update();
-        msleep(1);
-        line_follow()
-    lower_pulley()
-    raise_pulley()
-
-def stop():
-    mav(left_motor, 0)
-    mav(right_motor, 0)
-
 def wait():
     msleep(5000)
 
-#BEGIN--------------------------
-
-raise_pulley()
-lower_pulley()
-
-"""
-wait_for_light(5)
-shut_down_in(119)
-
-camera_open_black()
-msleep(2000)
-
-raise_pulley()
-
-turn_left_wheel(90)
-wait()
-go_to_black()
-go_to_white()
-go_to_black()
-wait()
-turn(-90)
-wait()
-go_to_object()
-wait()
-move(5)
-go_to_black()
-wait()
-turn_right_wheel(90)
-wait()
-for i in range(3):
-    go_to_object()
-    
-while(not analog(toph_front)):
-    line_follow()
-
-wait() 
-turn_left_wheel(90)
-turn_right_wheel(90)
-wait()
-go_to_object()
-turn(90)
-lower_pulley()
-"""
+# planned functions
+def turn_right_wheel(deg):
+    pass
+def turn_left_wheel(deg):
+    pass
+def pid_line_follow_for(baseLeftPower, baseRightPower, time):
+    pass

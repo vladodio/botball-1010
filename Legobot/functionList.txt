@@ -1,0 +1,31 @@
+[Functions]
+move(Left_power, Right_power)
+turn(Angle, Left_power, Right_power, length_of_ticks=10)
+stop(sleepTime=0)
+pause(sleepTime)
+go_to_black(Lpower=1000, Rpower=1000)
+go_to_white(Lpower=1000, Rpower=1000)
+
+
+[Variables]
+left_motor    |  
+right_motor   |  
+pulley        |  
+
+toph_left     |
+toph_right    |
+toph_front    |
+
+claw          |
+opened        |
+closed        |
+
+[Calibrated Values]
+degrees_to_ticks   |
+gyroscope_bias     |
+
+
+[Auto Updated Variables]
+current_left_power  |  contains the current value of left motor.
+current_right_power |  contains the current value of left motor.
+current_theta       |  contains the current ticks the wallaby has traveled if currently turning. if not turning contains zero.
