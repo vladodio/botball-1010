@@ -1,4 +1,9 @@
 #!/usr/bin/python
+
+# not functional at the moment 
+# DO NOT USE
+# Note to self: Rewrite from scratch, to many shitty conventions present
+
 import os
 from datetime import datetime
 from time import time

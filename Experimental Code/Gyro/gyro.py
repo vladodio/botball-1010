@@ -1,4 +1,8 @@
 #!/usr/bin/python
+
+# this file is more or less the C code converted point for point to python
+# not much else to it
+
 import os, sys
 from wallaby import *
 
