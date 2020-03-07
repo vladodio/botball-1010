@@ -1,0 +1,34 @@
+black = 1500
+pivot = 500
+ninety = 1000
+around = 2000
+def wallFollowleft():
+    if get_create_lbump() == 0:
+        drive(100, 180)
+        msleep(5)
+    else:
+        drive(200, 100)
+        msleep(5)
+    msleep(1)
+
+def wallFollowleft():
+    if get_create_rbump() == 0:
+        drive(180, 100)
+        msleep(5)
+    else:
+        drive(100, 200)
+        msleep(5)
+    msleep(1)
+def main():
+    while(get_create_lfcliff_amt() > black or get_create_rfcliff_amt() > black):
+        drive(200,200)
+        msleep(1)
+    drive(0,0)
+    msleep(200)
+    drive(200,0)
+    msleep(pivot)
+    while(get_create_rbump() == 0):
+        drive(200,200)
+        msleep(1)
+    drive(0,0)
+    msleep(200)
